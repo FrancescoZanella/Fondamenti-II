@@ -19,16 +19,17 @@ Gioiello *Gioielli(const char *filename,float b, int *ret_size) {
 	for (int i = 0; i < numGioielli; i++) {
 		fscanf(f, "%d %f %f\n", &res[i].codice, &res[i].peso, &res[i].prezzo);
 	}
-	int min,temp;
+	int min;
+	Gioiello *temp=malloc(numGioielli *sizeof(Gioiello));
 	//li ordino in base al peso in ordine decrescente
 	for (int i = 0; i < numGioielli - 1; i++)
 	{
 		min = i;
 		for (int j = i + 1; j < numGioielli; j++)
-			if (res[j].peso > res[min].peso) 
+			if (res[j].peso/res[j].prezzo > res[min].peso/ res[min].prezzo)
 				min = j;
 
-		temp = res[min].peso; res[min].peso = res[i].peso; 		res[i].peso = temp;		
+		temp[i] = res[min]; res[min] = res[i]; 		res[i] = temp[i];		
 	}
 	int r = 0,h=0,numfin=numGioielli;
 	Gioiello *resfin = malloc(numfin * sizeof(Gioiello));
@@ -45,13 +46,13 @@ Gioiello *Gioielli(const char *filename,float b, int *ret_size) {
 			resfin = realloc(resfin, numfin * sizeof(Gioiello));
 		}
 	}
-	ret_size = resfin;
-	return ret_size;
+	*ret_size = numfin;
+	free(res);
+	free(temp);
+	fclose(f);
+	return resfin;
 
 }
-	
-
-
 
 
 

@@ -1,9 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include"gioielli.h"
 Gioiello *Gioielli(const char *filename,float b, int *ret_size) {
-	/*1 12 100   peso valore     devo massimizzare il peso rimanendo sotto valore   8.33    2,1     4.8
-      2 10 21
-      3 25 120*/
+	// apertura file e controlli sull'apertura del file
 	FILE* f = fopen(filename, "rt");
 	if (!f) {
 		return NULL;
@@ -11,17 +9,19 @@ Gioiello *Gioielli(const char *filename,float b, int *ret_size) {
 	int numGioielli = 0, a ;
 	float d;
 	float c ;
+	//prima lettura del file e identificazione del numero di gioielli nel file
 	while (fscanf(f,"%d %f %f\n",&a,&d,&c ) == 3) {
 			numGioielli++;
 	}
 	rewind(f);
+	//alloco un vettore di tanti gioeielli quanti contati prima
 	Gioiello *res = malloc(numGioielli * sizeof(Gioiello));
 	for (int i = 0; i < numGioielli; i++) {
 		fscanf(f, "%d %f %f\n", &res[i].codice, &res[i].peso, &res[i].prezzo);
 	}
 	int min;
 	Gioiello *temp=malloc(numGioielli *sizeof(Gioiello));
-	//li ordino in base al peso in ordine decrescente
+	//li ordino in base al peso/prezzo in ordine decrescente
 	for (int i = 0; i < numGioielli - 1; i++)
 	{
 		min = i;
